@@ -74,7 +74,7 @@ To solve a level with the SATPLAN method:
 > python3 plan_sat.py path_to_file
 
 #### Example
-`python3 helltaker_plan_asp.py ./levels/level1.txt`
+`python3 plan_asp.py ./levels/level1.txt`
 
 ## 3. Experimental testing
 
