@@ -14,7 +14,7 @@ def plan_sat(infos):
     :param infos: dict containing all map data
     :return: string sequence of instructions (hbgd)
     """
-    sat_model = sat_solving(infos, solver='pysat')
+    sat_model = sat_solving(infos, solver="pysat")
 
     return convert_model(sat_model)
 

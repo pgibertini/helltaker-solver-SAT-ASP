@@ -258,12 +258,7 @@ def adjacent(at: Coord) -> List[Coord]:
     :return: list of directly adjacent cells
     """
     i, j = at
-    return [
-        (i, j - 1),
-        (i, j + 1),
-        (i - 1, j),
-        (i + 1, j),
-    ]
+    return [(i, j - 1), (i, j + 1), (i - 1, j), (i + 1, j)]
 
 
 def adjacent_block(at: Coord) -> List[Coord]:
@@ -272,12 +267,7 @@ def adjacent_block(at: Coord) -> List[Coord]:
     :return: list of non directly adjacent cells coords
     """
     i, j = at
-    return [
-        (i, j - 2),
-        (i, j + 2),
-        (i - 2, j),
-        (i + 2, j),
-    ]
+    return [(i, j - 2), (i, j + 2), (i - 2, j), (i + 2, j)]
 
 
 def clauses_successor_from_given_position(
@@ -455,7 +445,9 @@ def clauses_lock_and_key(
     clauses += [[-var2n[("at", t, key)], var2n[("have_key", t)]] for t in range(t_max)]
 
     # si on a la clé, on continue de l'avoir
-    clauses += [[-var2n[("have_key", t)], var2n[("have_key", t + 1)]] for t in range(t_max)]
+    clauses += [
+        [-var2n[("have_key", t)], var2n[("have_key", t + 1)]] for t in range(t_max)
+    ]
 
     # on ne récupère pas la clé si on n'est pas sur la case et qu'on ne l'a pas déjà
     clauses += [
@@ -479,7 +471,9 @@ def clauses_empty(var2n: dict, t_max: int, cell: Coord) -> List[Clause]:
     clauses = []
 
     # une case avec mob n'est pas vide
-    clauses += [[-var2n[("mob", t, cell)], -var2n[("empty", t, cell)]] for t in range(t_max)]
+    clauses += [
+        [-var2n[("mob", t, cell)], -var2n[("empty", t, cell)]] for t in range(t_max)
+    ]
 
     # une case avec block n'est pas vide
     clauses += [
@@ -892,7 +886,7 @@ def exec_pysat(filename: str):
     return g.solve(), g.get_model()
 
 
-def sat_solving(data: dict, solver: str = 'gophersat'):
+def sat_solving(data: dict, solver: str = "gophersat"):
     """
     :param solver:
     :param data: dict containing all level data
@@ -907,12 +901,12 @@ def sat_solving(data: dict, solver: str = 'gophersat'):
     filename = "helltaker.cnf"
     write_dimacs_file(dimacs, filename)
 
-    if solver == 'gophersat':
+    if solver == "gophersat":
         sat, model = exec_gophersat(filename)
-    elif solver == 'pysat':
+    elif solver == "pysat":
         sat, model = exec_pysat(filename)
     else:
-        print('incorrect solver')
+        print("incorrect solver")
         return None
 
     if sat:
@@ -958,7 +952,7 @@ def test():
 
         print()
 
-    model = sat_solving(grid_data, 'pysat')
+    model = sat_solving(grid_data, "pysat")
     print(model)
     print(convert_model(model))
 
