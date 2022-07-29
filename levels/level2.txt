@@ -1,0 +1,10 @@
+Level 2 (merci à E. Porte)
+24
+ ####
+#    ##
+#M#SS  #
+ S##OOB#
+  ## S #
+H ## M #
+####D M#
+########
