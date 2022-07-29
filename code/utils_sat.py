@@ -1,7 +1,7 @@
 """
 Authors: Anne-Soline Guilbert--Ly, Romane Dauge, Pierre Gibertini
 
-This module contains the necessary functions to solve the problem in ASP
+This module contains the necessary functions to solve the problem in SAT
 """
 
 import sys
