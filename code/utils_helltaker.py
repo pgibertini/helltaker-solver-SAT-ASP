@@ -98,7 +98,7 @@ def check_plan(plan: str):
 def convert_action(action: str) -> str:
     """
     :param action: an action such as defined in the vocabulary
-    :return: corresponding directions (hbgd)
+    :return: corresponding directions (udlr)
     """
     if action in ["up", "push_block_up", "push_mob_up"]:
         return "u"
