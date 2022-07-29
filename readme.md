@@ -84,6 +84,20 @@ To solve a level with the SATPLAN method:
 
 ## 3. Experimental testing
 
+#### Number of different solutions per level
+
+| Level   | Number of solutions |
+|---------|---------------------| 
+| level 1 | 8                   |
+| level 2 | 3                   |
+| level 3 | 1                   |
+| level 4 | 2                   |
+| level 5 | 26                  |
+| level 6 | 39                  |
+| level 7 | 2                   |
+| level 8 | 4                   |
+| level 9 | 2                   |
+
 We compared the execution time between our two solving methods : ASP (using Clingo) and SAT (using the Glucose4 solver)
 
 > The measurements were made on a Lenovo Yoga Slim 7 laptop (plugged in) with an AMD Ryzen 7 4700U processor.
