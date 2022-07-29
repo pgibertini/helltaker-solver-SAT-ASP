@@ -9,6 +9,12 @@
 
 **The goal of the project was to develop a program capable of solving Helltaker game levels.**
 
+Example of level :
+
+![Level 7](https://cdn.canardware.com/2021/05/05014910/6841-helltaker-1.jpg)
+
+The goal of each level is to do a succession of actions (`up`, `down`, `left` or `right`) in order to reach the demon girl, in a given number of actions.
+
 ### Input
 
 A simple `.txt` with a title in the first line, a maximum number of moves in the second line, then the description of the level. The lines do not have to be finished.
