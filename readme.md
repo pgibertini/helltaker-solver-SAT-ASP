@@ -68,16 +68,20 @@ Two different solving methods have been implemented.
 
 - https://en.wikipedia.org/wiki/Answer_set_programming
 
+**Requirement:** `pip install clingo`
+
 To solve a level with the ASPPLAN method:
-> python3 plan_asp.py path_to_file
+> `python3 plan_asp.py path_to_file`
 
 
 ### SATPLAN
 
 - https://en.wikipedia.org/wiki/Satplan
 
+**Requirement:** `pip install python-sat`
+
 To solve a level with the SATPLAN method:
-> python3 plan_sat.py path_to_file
+> `python3 plan_sat.py path_to_file`
 
 #### Example
 `python3 plan_asp.py ../levels/level1.txt`
