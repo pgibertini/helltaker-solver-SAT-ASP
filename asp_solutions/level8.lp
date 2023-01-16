@@ -1,120 +1,99 @@
-"""
-Authors: Anne-Soline Guilbert--Ly, Romane Dauge, Pierre Gibertini
 
-This module contains the necessary functions to solve the problem in ASP
-"""
-import sys
-from time import time
-from typing import List
-import clingo
-from utils_helltaker import grid_from_file, convert_action
+%%% MAP DESCRIPTION
+#const horizon=12.
+cell(1, 1).
+cell(1, 2).
+cell(1, 5).
+cell(1, 8).
+cell(1, 9).
+cell(2, 1).
+cell(2, 2).
+cell(2, 3).
+cell(2, 4).
+cell(2, 5).
+cell(2, 6).
+cell(2, 7).
+cell(2, 8).
+cell(2, 9).
+cell(3, 1).
+cell(3, 2).
+cell(3, 3).
+cell(3, 4).
+cell(3, 5).
+cell(3, 6).
+cell(3, 7).
+cell(3, 8).
+cell(3, 9).
+cell(4, 1).
+cell(4, 2).
+cell(4, 4).
+cell(4, 5).
+cell(4, 6).
+cell(4, 8).
+cell(4, 9).
+cell(5, 1).
+cell(5, 2).
+cell(5, 3).
+cell(5, 4).
+cell(5, 5).
+cell(5, 6).
+cell(5, 7).
+cell(5, 8).
+cell(5, 9).
+cell(6, 1).
+cell(6, 2).
+cell(6, 4).
+cell(6, 5).
+cell(6, 6).
+cell(6, 8).
+cell(6, 9).
+cell(7, 1).
+cell(7, 2).
+cell(7, 3).
+cell(7, 4).
+cell(7, 5).
+cell(7, 6).
+cell(7, 7).
+cell(7, 8).
+cell(7, 9).
+cell(8, 2).
+cell(8, 4).
+cell(8, 5).
+cell(8, 6).
+cell(8, 8).
+cell(9, 2).
+cell(9, 3).
+cell(9, 4).
+cell(9, 5).
+cell(9, 6).
+cell(9, 7).
+cell(9, 8).
+cell(10, 2).
+cell(10, 4).
+cell(10, 5).
+cell(10, 6).
+cell(10, 8).
+cell(11, 2).
+cell(11, 3).
+cell(11, 4).
+cell(11, 5).
+cell(11, 6).
+cell(11, 7).
+cell(11, 8).
+cell(12, 4).
+cell(12, 5).
+cell(12, 6).
+demoness(1, 5).
+fluent(mob(2, 5), 0).
+fluent(mob(3, 5), 0).
+fluent(mob(4, 5), 0).
+fluent(mob(5, 5), 0).
+fluent(mob(6, 5), 0).
+fluent(mob(7, 5), 0).
+fluent(mob(8, 5), 0).
+fluent(mob(9, 5), 0).
+fluent(at(11, 5), 0).
 
-
-def grid_to_model(data) -> str:
-    """
-    :param data: dict containing all the map data
-    :return: ASP description of the problem
-    """
-    const = f"#const horizon={data.get('max_steps')}.\n"
-    cells = ""
-    hero = ""
-    demonesses = ""
-    key = ""
-    lock = ""
-    spikes = ""
-    traps = ""
-    blocks = ""
-    mobs = ""
-
-    grid = data.get("grid")
-
-    for i in range(data.get("m")):
-        for j in range(data.get("n")):
-            if grid[i][j] != "#":
-                cells += f"cell({i}, {j}).\n"
-
-            if grid[i][j] == "H":
-                hero = f"fluent(at({i}, {j}), 0).\n"
-            elif grid[i][j] == "D":
-                demonesses += f"demoness({i}, {j}).\n"
-            elif grid[i][j] == "K":
-                key += f"key({i}, {j}).\n"
-            elif grid[i][j] == "L":
-                lock += f"fluent(lock({i}, {j}), 0).\n"
-            elif grid[i][j] == "S":
-                spikes += f"fluent(spike({i}, {j}), 0).\n"
-            elif grid[i][j] == "T":
-                traps += f"fluent(trap({i}, {j}), 0, safe).\n"
-            elif grid[i][j] == "U":
-                traps += f"fluent(trap({i}, {j}), 0, unsafe).\n"
-            elif grid[i][j] == "B":
-                blocks += f"fluent(block({i}, {j}), 0).\n"
-            elif grid[i][j] == "M":
-                mobs += f"fluent(mob({i}, {j}), 0).\n"
-            elif grid[i][j] == "O":
-                blocks += f"fluent(block({i}, {j}), 0).\n"
-                spikes += f"fluent(spike({i}, {j}), 0).\n"
-            elif grid[i][j] == "P":
-                blocks += f"fluent(block({i}, {j}), 0).\n"
-                traps += f"fluent(trap({i}, {j}), 0, safe).\n"
-            elif grid[i][j] == "Q":
-                blocks += f"fluent(block({i}, {j}), 0).\n"
-                traps += f"fluent(trap({i}, {j}), 0, unsafe).\n"
-
-    return (
-        "\n%%% MAP DESCRIPTION\n"
-        + const
-        + cells
-        + demonesses
-        + key
-        + lock
-        + spikes
-        + traps
-        + blocks
-        + mobs
-        + hero
-        + RULES
-    )
-
-
-def convert_model(model: List[clingo.Symbol]) -> str:
-    """
-    :param model: an ordered list of symbol "do(action, time)"
-    :return: corresponding instructions (hbgd)
-    """
-    plan = ""
-    for atom in model:
-        plan += convert_action(atom.arguments[0].name)
-
-    return plan
-
-
-def call_solver(asp_problem: str, n_models: int = 0) -> List[List[clingo.Symbol]]:
-    """
-    :param asp_problem: a string containing the problem written in ASP
-    :param n_models: the number of desired models (0 for all)
-    :return: a list of models
-    """
-    ctl = clingo.Control([f"-n {n_models}"])
-    ctl.add("base", [], asp_problem)
-    ctl.ground([("base", [])])
-
-    models = []
-
-    with ctl.solve(yield_=True) as handle:
-        for model in handle:
-            actions = []
-            for atom in model.symbols(atoms=True):
-                if atom.match("do", 2):
-                    actions.append(atom)
-
-            actions.sort(key=lambda a: a.arguments[1].number)
-            models.append(actions)
-
-    return models
-
-
-RULES = """
 step(0..horizon-1).
 
 %%% GENERATION OF ACTIONS
@@ -291,39 +270,3 @@ fluent(trap(X, Y), T+1, safe) :- fluent(trap(X, Y), T, safe), do(A, T), A = hurt
 fluent(F, T+1) :- fluent(F, T), T+1 < horizon, not removed(F, T).
 
 #show do/2.
-"""
-
-
-def test():
-    """
-    Test function of ASP solving
-    Run: python3 utils_asp.py /./levels/level1.txt
-    """
-    start = time()
-    filename = sys.argv[1]
-    infos = grid_from_file(filename)
-
-    asp_problem = grid_to_model(data=infos)
-
-    print("SOLVER INPUT:\n")
-    print(asp_problem)
-
-    # save the asp file
-    # import re
-    # level_id = re.findall(r'\d+', filename)[0]
-    # f = open(f"../asp/level{level_id}.lp", "a")
-    # f.write(asp_problem)
-    # f.close()
-
-    print("MODELS")
-    for i_model, model in enumerate(call_solver(asp_problem, 0)):
-        print(f"\nModel #{i_model+1}:")
-        for atom in model:
-            print(atom)
-        print("Instructions:", convert_model(model))
-
-    print(f"\nRunning time: {time() - start}s")
-
-
-if __name__ == "__main__":
-    test()
