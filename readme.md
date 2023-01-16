@@ -76,7 +76,7 @@ To solve a level with the ASPPLAN method:
 To print the ASP file and enumerate all the solutions to a given level!
 > `python3 asp_utils.py path_to_file`
 
-> Note: ASP solutions for each level are saved in the directory `asp_solutions` if you want to have a look the strategy adopted.
+> Note: ASP solutions for each level are saved in the directory `asp_solutions` if you want to have a look at the strategies adopted.
 > It is also possible to run the solving directly from the `.lp` file using `clingo levelX.lp -n0` command (`-n0` to generate all the solutions).
 
 ### SATPLAN
