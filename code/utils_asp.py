@@ -297,7 +297,7 @@ fluent(F, T+1) :- fluent(F, T), T+1 < horizon, not removed(F, T).
 def test():
     """
     Test function of ASP solving
-    Run: python3 utils_asp.py ./levels/level1.txt
+    Run: python3 utils_asp.py /./levels/level1.txt
     """
     start = time()
     filename = sys.argv[1]
@@ -307,6 +307,10 @@ def test():
 
     print("SOLVER INPUT:\n")
     print(asp_problem)
+
+    f = open(f"../asp/{filename.split('.')[0]}.lp", "a")
+    f.write(asp_problem)
+    f.close()
 
     print("MODELS")
     for i_model, model in enumerate(call_solver(asp_problem, 0)):

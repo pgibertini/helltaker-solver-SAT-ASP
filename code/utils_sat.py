@@ -930,7 +930,7 @@ def convert_model(sat_model: List):
 def test():
     """
     Test function of SAT solving
-    Run: python3 utils_asp.py ./levels/level1.txt
+    Run: python3 utils_sat.py ../levels/level1.txt
     """
     start = time()
     debug = False
