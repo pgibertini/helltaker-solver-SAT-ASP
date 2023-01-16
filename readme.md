@@ -73,6 +73,8 @@ Two different solving methods have been implemented.
 To solve a level with the ASPPLAN method:
 > `python3 plan_asp.py path_to_file`
 
+To print the ASP file and enumerate all the solutions to a given level!
+> `python3 asp_utils.py path_to_file`
 
 ### SATPLAN
 
